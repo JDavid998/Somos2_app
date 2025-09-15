@@ -1,0 +1,23 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  customer_name: MyString
+  customer_adress: MyText
+  customer_phone: MyString
+  scheduled_date: 2025-09-15
+  start_time: 2025-09-15 08:46:16
+  duration_hours: 1
+  status: MyString
+  technician: one
+  notes: MyText
+
+two:
+  customer_name: MyString
+  customer_adress: MyText
+  customer_phone: MyString
+  scheduled_date: 2025-09-15
+  start_time: 2025-09-15 08:46:16
+  duration_hours: 1
+  status: MyString
+  technician: two
+  notes: MyText

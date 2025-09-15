@@ -1,0 +1,61 @@
+<div class="min-h-screen bg-gray-50">
+  <div class="bg-white shadow">
+    <div class="px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center py-6">
+        <h1 class="text-3xl font-bold text-gray-900">Dashboard</h1>
+        <%= link_to "Cerrar Sesión", destroy_user_session_path, method: :delete,
+            class: "text-red-600 hover:text-red-800" %>
+      </div>
+    </div>
+  </div>
+
+  <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+    <!-- Stats Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+      <div class="bg-white rounded-lg shadow p-6">
+        <h3 class="text-lg font-medium text-gray-900">Instalaciones Pendientes</h3>
+        <p class="text-3xl font-bold text-blue-600"><%= Installation.pending.count %></p>
+      </div>
+      <div class="bg-white rounded-lg shadow p-6">
+        <h3 class="text-lg font-medium text-gray-900">Técnicos Activos</h3>
+        <p class="text-3xl font-bold text-green-600"><%= Technician.active.count %></p>
+      </div>
+      <div class="bg-white rounded-lg shadow p-6">
+        <h3 class="text-lg font-medium text-gray-900">Instalaciones Hoy</h3>
+        <p class="text-3xl font-bold text-yellow-600"><%= Installation.for_date(Date.current).count %></p>
+      </div>
+      <div class="bg-white rounded-lg shadow p-6">
+        <h3 class="text-lg font-medium text-gray-900">Completadas Este Mes</h3>
+        <p class="text-3xl font-bold text-purple-600"><%= Installation.completed.where(created_at: Date.current.beginning_of_month..Date.current.end_of_month).count %></p>
+      </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="bg-white shadow rounded-lg p-6 mb-8">
+      <h2 class="text-xl font-bold text-gray-900 mb-4">Acciones Rápidas</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <%= link_to "Nueva Instalación", new_installation_path, 
+            class: "bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg text-center transition duration-200" %>
+        <%= link_to "Ver Instalaciones", installations_path,
+            class: "bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg text-center transition duration-200" %>
+        <%= link_to "Gestionar Técnicos", technicians_path,
+            class: "bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-6 rounded-lg text-center transition duration-200" %>
+      </div>
+    </div>
+
+    <!-- Charts Section -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+      <!-- Gráfico de instalaciones por día -->
+      <div class="bg-white shadow rounded-lg p-6">
+        <h2 class="text-xl font-bold text-gray-900 mb-4">Instalaciones por Día (Últimos 30 días)</h2>
+        <%= line_chart @installations_by_day, height: "300px", colors: ["#3B82F6"] %>
+      </div>
+      
+      <!-- Gráfico de técnicos trabajando por día -->
+      <div class="bg-white shadow rounded-lg p-6">
+        <h2 class="text-xl font-bold text-gray-900 mb-4">Técnicos Trabajando por Día</h2>
+        <%= column_chart @technicians_by_day, height: "300px", colors: ["#10B981", "#F59E0B", "#EF4444", "#8B5CF6", "#F97316"] %>
+      </div>
+    </div>
+  </div>
+</div>
