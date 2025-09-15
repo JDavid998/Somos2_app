@@ -27,8 +27,11 @@
             <div class="flex items-center space-x-4">
               <%= link_to "Instalaciones", installations_path, class: "text-gray-600 hover:text-gray-900" %>
               <%= link_to "Técnicos", technicians_path, class: "text-gray-600 hover:text-gray-900" %>
-              <%= link_to "Horarios", schedules_path, class: "text-gray-600 hover:text-gray-900" %>
               <span class="text-sm text-gray-500">Hola, <%= current_user.name %></span>
+              <%= form_with url: destroy_user_session_path, method: :delete, local: true, class: "inline" do |form| %>
+                <%= form.submit "Cerrar Sesión", 
+                    class: "bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded text-sm cursor-pointer" %>
+              <% end %>
             </div>
           </div>
         </div>
