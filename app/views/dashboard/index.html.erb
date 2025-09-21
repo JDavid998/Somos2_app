@@ -1,36 +1,36 @@
-<div class="min-h-screen bg-gray-50">
-  <div class="bg-white shadow">
+<div class="min-h-screen bg-gray-900">
+  <div class="bg-gray-800 shadow-lg border-b-2 border-emerald-400">
     <div class="px-4 sm:px-6 lg:px-8">
       <div class="py-6">
-        <h1 class="text-3xl font-bold text-gray-900">Dashboard</h1>
+        <h1 class="text-3xl font-bold text-gray-100">Dashboard</h1>
       </div>
     </div>
   </div>
 
-  <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-    <!-- Stats Cards -->
+  <div class="bg-gray-900 max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+       
     <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-      <div class="bg-white rounded-lg shadow p-6">
-        <h3 class="text-lg font-medium text-gray-900">Instalaciones Pendientes</h3>
-        <p class="text-3xl font-bold text-blue-600"><%= Installation.pending.count %></p>
+      <div class="bg-gray-800 rounded-lg shadow-lg border-2 border-emerald-400 p-6">
+        <h3 class="text-lg font-medium text-gray-300">Instalaciones Pendientes</h3>
+        <p class="text-3xl font-bold text-blue-300"><%= Installation.pending.count %></p>
       </div>
-      <div class="bg-white rounded-lg shadow p-6">
-        <h3 class="text-lg font-medium text-gray-900">Técnicos Activos</h3>
-        <p class="text-3xl font-bold text-green-600"><%= Technician.active.count %></p>
+      <div class="bg-gray-800 rounded-lg shadow-lg border-2 border-emerald-400 p-6">
+        <h3 class="text-lg font-medium text-gray-300">Técnicos Activos</h3>
+        <p class="text-3xl font-bold text-green-300"><%= Technician.active.count %></p>
       </div>
-      <div class="bg-white rounded-lg shadow p-6">
-        <h3 class="text-lg font-medium text-gray-900">Instalaciones Hoy</h3>
-        <p class="text-3xl font-bold text-yellow-600"><%= Installation.for_date(Date.current).count %></p>
+      <div class="bg-gray-800 rounded-lg shadow-lg border-2 border-emerald-400 p-6">
+        <h3 class="text-lg font-medium text-gray-300">Instalaciones Hoy</h3>
+        <p class="text-3xl font-bold text-yellow-300"><%= Installation.for_date(Date.current).count %></p>
       </div>
-      <div class="bg-white rounded-lg shadow p-6">
-        <h3 class="text-lg font-medium text-gray-900">Completadas Este Mes</h3>
-        <p class="text-3xl font-bold text-purple-600"><%= Installation.completed.where(created_at: Date.current.beginning_of_month..Date.current.end_of_month).count %></p>
+      <div class="bg-gray-800 rounded-lg shadow-lg border-2 border-emerald-400 p-6">
+        <h3 class="text-lg font-medium text-gray-300">Completadas Este Mes</h3>
+        <p class="text-3xl font-bold text-purple-300"><%= Installation.completed.where(created_at: Date.current.beginning_of_month..Date.current.end_of_month).count %></p>
       </div>
     </div>
 
-    <!-- Quick Actions -->
-    <div class="bg-white shadow rounded-lg p-6 mb-8">
-      <h2 class="text-xl font-bold text-gray-900 mb-4">Acciones Rápidas</h2>
+    
+    <div class="bg-gray-800 shadow-lg rounded-lg border-2 border-emerald-400 p-6 mb-8">
+      <h2 class="text-xl font-bold text-gray-200 mb-4">Acciones Rápidas</h2>
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
         <%= link_to "Nueva Instalación", new_installation_path, 
             class: "bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg text-center transition duration-200" %>
@@ -41,18 +41,174 @@
       </div>
     </div>
 
-    <!-- Charts Section -->
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-      <!-- Gráfico de instalaciones por día -->
-      <div class="bg-white shadow rounded-lg p-6">
-        <h2 class="text-xl font-bold text-gray-900 mb-4">Instalaciones por Día (Últimos 30 días)</h2>
-        <%= line_chart @installations_by_day, height: "300px", colors: ["#3B82F6"] %>
+    <!-- Sección de Horarios Semanales -->
+    <div class="bg-gray-800 shadow-lg rounded-lg border-2 border-emerald-400 p-6 mb-8">
+      <div class="flex items-center mb-6">
+        <svg class="w-6 h-6 text-emerald-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+        </svg>
+        <h2 class="text-xl font-bold text-gray-200">Próximas Instalaciones (2 semanas)</h2>
       </div>
       
-      <!-- Gráfico de técnicos trabajando por día -->
-      <div class="bg-white shadow rounded-lg p-6">
-        <h2 class="text-xl font-bold text-gray-900 mb-4">Técnicos Trabajando por Día</h2>
-        <%= column_chart @technicians_by_day, height: "300px", colors: ["#10B981", "#F59E0B", "#EF4444", "#8B5CF6", "#F97316"] %>
+      <% if @weekly_schedule.any? %>
+        <div class="space-y-6">
+          <% @weekly_schedule.each do |technician, installations| %>
+            <div class="bg-gray-700/30 rounded-lg p-4 border border-gray-500/20">
+              <h3 class="text-lg font-semibold text-gray-200 mb-3 flex items-center">
+                <svg class="w-5 h-5 mr-2 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                </svg>
+                <%= technician.is_a?(String) ? technician : technician.name %>
+              </h3>
+              <div class="grid gap-2">
+                <% installations.each do |installation| %>
+                  <div class="bg-gray-800/50 rounded p-3 border-l-4 <%= case installation.status
+                    when 'assigned' then 'border-yellow-400'
+                    when 'in_progress' then 'border-green-400'
+                    else 'border-gray-400'
+                    end %>">
+                    <div class="flex justify-between items-start">
+                      <div class="flex-1">
+                        <div class="flex items-center text-sm text-gray-300 mb-1">
+                          <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                          </svg>
+                          <%= installation.scheduled_date.strftime("%A, %d %b") %>
+                          <% if installation.scheduled_time %>
+                            - <%= installation.scheduled_time.strftime("%H:%M") %>
+                          <% else %>
+                            - Hora no especificada
+                          <% end %>
+                        </div>
+                        <div class="text-white font-medium"><%= installation.customer_name %></div>
+                        <div class="text-gray-400 text-sm"><%= installation.customer_address %></div>
+                      </div>
+                      <div class="text-xs px-2 py-1 rounded <%= case installation.status
+                        when 'assigned' then 'bg-yellow-600 text-yellow-100'
+                        when 'in_progress' then 'bg-green-600 text-green-100'
+                        else 'bg-gray-600 text-gray-100'
+                        end %>">
+                        <%= installation.status.humanize %>
+                      </div>
+                    </div>
+                  </div>
+                <% end %>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      <% else %>
+        <div class="text-center text-gray-400 py-8">
+          <svg class="w-12 h-12 mx-auto mb-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+          </svg>
+          <p>No hay instalaciones programadas para las próximas 2 semanas</p>
+        </div>
+      <% end %>
+    </div>
+
+    <!-- Charts Section -->
+    <div class="bg-gray-800 shadow-lg rounded-lg border-2 border-emerald-400 p-6 mb-8">
+      <div class="flex flex-wrap items-center justify-between mb-6">
+        <h2 class="text-xl font-bold text-gray-200">Análisis y Gráficas</h2>
+        
+        <!-- Filtros -->
+        <%= form_with url: dashboard_path, method: :get, local: true, class: "flex flex-wrap gap-4" do |form| %>
+          <div class="flex flex-col">
+            <%= form.label :technician_id, "Técnico:", class: "text-sm text-gray-300 mb-1" %>
+            <%= form.select :technician_id, 
+                options_from_collection_for_select(@all_technicians, :id, :name, @selected_technician&.id), 
+                { include_blank: "Todos los técnicos" }, 
+                { class: "bg-gray-700 text-gray-200 border border-gray-600 rounded px-3 py-2 text-sm" } %>
+          </div>
+          
+          <div class="flex flex-col">
+            <%= form.label :date_range, "Período:", class: "text-sm text-gray-300 mb-1" %>
+            <%= form.select :date_range, 
+                options_for_select([
+                  ['Últimos 7 días', '7_days'],
+                  ['Últimos 30 días', '30_days'],
+                  ['Últimos 90 días', '90_days']
+                ], @date_range), 
+                {}, 
+                { class: "bg-gray-700 text-gray-200 border border-gray-600 rounded px-3 py-2 text-sm" } %>
+          </div>
+          
+          <div class="flex items-end">
+            <%= form.submit "Filtrar", class: "bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm transition duration-200" %>
+          </div>
+          
+          <% if @selected_technician || @date_range != '30_days' %>
+            <div class="flex items-end">
+              <%= link_to "Limpiar", dashboard_path, class: "bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded text-sm transition duration-200" %>
+            </div>
+          <% end %>
+        <% end %>
+      </div>
+      
+      <!-- Grid de gráficas -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- Gráfico de instalaciones por día -->
+        <div class="bg-gray-700/50 rounded-lg p-4">
+          <h3 class="text-lg font-semibold text-gray-200 mb-3">
+            <% if @selected_technician %>
+              Instalaciones de <%= @selected_technician.name %> por Día
+            <% else %>
+              Instalaciones por Día
+            <% end %>
+          </h3>
+          <%= line_chart @installations_by_day, 
+              height: "250px", 
+              colors: ["#60A5FA"],
+              library: { 
+                backgroundColor: 'transparent',
+                plugins: { legend: { labels: { color: '#E5E7EB' } } },
+                scales: { 
+                  x: { ticks: { color: '#9CA3AF' } }, 
+                  y: { ticks: { color: '#9CA3AF' } } 
+                }
+              } %>
+        </div>
+        
+
+        <!-- Gráfico de estados de instalaciones -->
+        <div class="bg-gray-700/50 rounded-lg p-4">
+          <h3 class="text-lg font-semibold text-gray-200 mb-3">Estados de Instalaciones</h3>
+          <%= pie_chart @installations_by_status, 
+              height: "250px", 
+              colors: ["#EF4444", "#3B82F6", "#F59E0B", "#10B981", "#6B7280"],
+              library: { 
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { 
+                  legend: { 
+                    labels: { 
+                      color: '#E5E7EB',
+                      font: {
+                        size: 14
+                      }
+                    },
+                    position: 'bottom'
+                  }
+                }
+              } %>
+        </div>
+        
+        <!-- Top técnicos por instalaciones -->
+        <div class="bg-gray-700/50 rounded-lg p-4">
+          <h3 class="text-lg font-semibold text-gray-200 mb-3">Top Técnicos (Instalaciones)</h3>
+          <%= bar_chart @installations_by_technician, 
+              height: "250px", 
+              colors: ["#8B5CF6"],
+              library: { 
+                backgroundColor: 'transparent',
+                plugins: { legend: { labels: { color: '#E5E7EB' } } },
+                scales: { 
+                  x: { ticks: { color: '#9CA3AF' } }, 
+                  y: { ticks: { color: '#9CA3AF' } } 
+                }
+              } %>
+        </div>
       </div>
     </div>
   </div>

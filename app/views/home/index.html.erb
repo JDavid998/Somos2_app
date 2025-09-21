@@ -1,18 +1,107 @@
-<div class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
-  <div class="container mx-auto px-4 py-16">
-    <div class="text-center">
-      <h1 class="text-4xl font-bold text-gray-900 mb-4">
-        Sistema de Programación de Instalaciones
-      </h1>
-      <p class="text-xl text-gray-600 mb-8">
-        Herramienta interna para administrar instalaciones de internet y asignar técnicos
-      </p>
-      
-      <div class="max-w-2xl mx-auto bg-white rounded-lg shadow-lg p-8">
-        <h2 class="text-2xl font-semibold mb-4">¿Eres administrador?</h2>
-        <%= link_to "Iniciar Sesión", new_user_session_path, 
-            class: "bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg transition duration-200" %>
+<div class="min-h-screen bg-gray-900 text-gray-200">
+
+  <div class="bg-gray-800 shadow-lg border-b-2 border-emerald-400">
+    <div class="container mx-auto px-4 py-6">
+      <div class="flex justify-between items-center">
+        <div>
+          <%= image_tag "logo_correo.png", alt: "Logo", class: "h-8" %>
+        </div>
+        <div>
+          <%= link_to "Administrador", new_user_session_path, 
+              class: "bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition duration-200" %>
+        </div>
       </div>
+    </div>
+  </div>
+  <div class="container mx-auto px-4 py-6">
+          <h1 class="text-3xl font-bold text-gray-100">
+           Instalaciones
+          </h1>
+    </div>
+  <div class="container mx-auto px-4 py-8">
+
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+      <div class="bg-gray-800 rounded-lg shadow-lg border-2 border-blue-400 p-6">
+        <h3 class="text-sm font-medium text-gray-300">Hoy</h3>
+        <p class="text-2xl font-bold text-blue-400"><%= @today_installations.count %></p>
+        <p class="text-xs text-gray-400">instalaciones</p>
+      </div>
+      
+      <div class="bg-gray-800 rounded-lg shadow-lg border-2 border-yellow-400 p-6">
+        <h3 class="text-sm font-medium text-gray-300">Pendientes</h3>
+        <p class="text-2xl font-bold text-yellow-400"><%= @pending_count %></p>
+        <p class="text-xs text-gray-400">asignadas</p>
+      </div>
+      
+      <div class="bg-gray-800 rounded-lg shadow-lg border-2 border-orange-400 p-6">
+        <h3 class="text-sm font-medium text-gray-300">En Progreso</h3>
+        <p class="text-2xl font-bold text-orange-400"><%= @in_progress_count %></p>
+        <p class="text-xs text-gray-400">trabajando</p>
+      </div>
+      
+      <div class="bg-gray-800 rounded-lg shadow-lg border-2 border-green-400 p-6">
+        <h3 class="text-sm font-medium text-gray-300">Completadas Hoy</h3>
+        <p class="text-2xl font-bold text-green-400"><%= @completed_today %></p>
+        <p class="text-xs text-gray-400">finalizadas</p>
+      </div>
+    </div>
+
+    <!-- Instalaciones de Hoy -->
+    <div class="bg-gray-800 shadow-lg rounded-lg border-2 border-emerald-400 p-6 mb-8">
+      <h2 class="text-xl font-bold text-gray-200 mb-4">
+        Instalaciones de Hoy (<%= Date.current.strftime("%d/%m/%Y") %>)
+      </h2>
+      
+      <% if @today_installations.any? %>
+        <div class="space-y-4">
+          <% @today_installations.each do |installation| %>
+            <div class="bg-gray-700/50 rounded-lg p-4 border-l-4 <%= 
+              case installation.status
+              when 'pending' then 'border-red-400'
+              when 'assigned' then 'border-blue-400'
+              when 'in_progress' then 'border-orange-400'
+              when 'completed' then 'border-green-400'
+              when 'cancelled' then 'border-gray-400'
+              else 'border-gray-400'
+              end %>">
+              <div class="flex justify-between items-start">
+                <div class="flex-1">
+                  <h3 class="font-semibold text-gray-200 text-lg"><%= installation.customer_name %></h3>
+                  <p class="text-gray-400 text-sm"><%= installation.customer_address %></p>
+                  <p class="text-gray-300 text-sm">
+                    Hora: <%= installation.scheduled_time&.strftime("%H:%M") || 'No especificada' %>
+                  </p>
+                  <% if installation.technician %>
+                    <p class="text-gray-300 text-sm">
+                      Técnico: <%= installation.technician.name %>
+                    </p>
+                  <% end %>
+                </div>
+                <span class="px-3 py-1 rounded text-sm font-medium <%= 
+                  case installation.status
+                  when 'pending' then 'bg-red-600 text-red-100'
+                  when 'assigned' then 'bg-blue-600 text-blue-100'
+                  when 'in_progress' then 'bg-orange-600 text-orange-100'
+                  when 'completed' then 'bg-green-600 text-green-100'
+                  when 'cancelled' then 'bg-gray-600 text-gray-100'
+                  else 'bg-gray-600 text-gray-100'
+                  end %>">
+                  <%= installation.status.humanize %>
+                </span>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      <% else %>
+        <div class="text-center text-gray-400 py-8">
+          <p>No hay instalaciones programadas para hoy</p>
+        </div>
+      <% end %>
+    </div>
+
+    <!-- Footer -->
+    <div class="text-center text-gray-400 text-sm">
+      <p>Última actualización: <%= Time.current.strftime("%H:%M") %></p>
     </div>
   </div>
 </div>

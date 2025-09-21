@@ -1,4 +1,34 @@
-<div>
-  <h1 class="font-bold text-4xl">Technicians#update</h1>
-  <p>Find me in app/views/technicians/update.html.erb</p>
-</div>
+<div class="technician-update">
+  <h1>Update Technician</h1>
+
+  <%= form_with(model: @technician, local: true) do |form| %>
+    <% if @technician.errors.any? %>
+      <div id="error_explanation">
+        <h2><%= pluralize(@technician.errors.count, "error") %> prohibited this technician from being saved:</h2>
+        <ul>
+          <% @technician.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <div class="field">
+      <%= form.label :name %>
+      <%= form.text_field :name %>
+    </div>
+
+    <div class="field">
+      <%= form.label :email %>
+      <%= form.email_field :email %>
+    </div>
+
+    <div class="field">
+      <%= form.label :phone_number %>
+      <%= form.telephone_field :phone_number %>
+    </div>
+
+    <div class="actions">
+      <%= form.submit 'Update Technician', class: 'btn btn-primary' %>
+    </div>
+  <% end %>

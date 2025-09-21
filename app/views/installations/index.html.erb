@@ -1,4 +1,56 @@
-<div>
-  <h1 class="font-bold text-4xl">Installations#index</h1>
-  <p>Find me in app/views/installations/index.html.erb</p>
+<div class="max-w-4xl mx-auto mt-8">
+  <h1 class="text-2xl font-bold mb-6 text-gray-200">Instalaciones</h1>
+
+  <% if @installations.any? %>
+    <div class="overflow-x-auto rounded-lg shadow-lg border-2 border-emerald-400">
+      <table class="min-w-full bg-gray-800 text-gray-200 rounded-lg">
+        <thead>
+          <tr class="bg-gray-700">
+            <th class="px-4 py-3 text-left font-medium text-gray-300">ID</th>
+            <th class="px-4 py-3 text-left font-medium text-gray-300">Cliente</th>
+            <th class="px-4 py-3 text-left font-medium text-gray-300">Estado</th>
+            <th class="px-4 py-3 text-left font-medium text-gray-300">Creado</th>
+            <th class="px-4 py-3 text-left font-medium text-gray-300">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @installations.each do |installation| %>
+            <tr class="border-b border-gray-700 hover:bg-gray-700 transition-colors">
+              <td class="px-4 py-3 text-gray-300"><%= installation.id %></td>
+              <td class="px-4 py-3 text-gray-200"><%= installation.customer_name %></td>
+              <td class="px-4 py-3">
+                <span class="px-2 py-1 rounded text-sm <%= 
+                  case installation.status
+                  when 'pending' then 'bg-yellow-600 text-yellow-100'
+                  when 'assigned' then 'bg-blue-600 text-blue-100'
+                  when 'in_progress' then 'bg-orange-600 text-orange-100'
+                  when 'completed' then 'bg-green-600 text-green-100'
+                  when 'cancelled' then 'bg-red-600 text-red-100'
+                  else 'bg-gray-600 text-gray-100'
+                  end %>">
+                  <%= installation.status.humanize %>
+                </span>
+              </td>
+              <td class="px-4 py-3 text-gray-300"><%= installation.created_at.strftime("%Y-%m-%d %H:%M") %></td>
+              <td class="px-4 py-3 space-x-2">
+                <%= link_to 'Ver', installation_path(installation), class: 'bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded text-sm transition duration-200' %>
+                <%= link_to 'Editar', edit_installation_path(installation), class: 'bg-yellow-600 hover:bg-yellow-700 text-white px-3 py-1 rounded text-sm transition duration-200' %>
+                <%= form_with url: installation_path(installation), method: :delete, data: { turbo_confirm: '¿Estás seguro?' }, class: 'inline' do %>
+                  <button type="submit" class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded text-sm transition duration-200">Eliminar</button>
+                <% end %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  <% else %>
+    <div class="bg-gray-800 border-2 border-emerald-400 text-gray-200 p-6 rounded-lg shadow-lg">
+      <p class="text-center">No hay instalaciones registradas.</p>
+    </div>
+  <% end %>
+
+  <div class="mt-6 flex justify-end">
+    <%= link_to 'Nueva Instalación', new_installation_path, class: 'bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg shadow-lg transition duration-200 font-medium' %>
+  </div>
 </div>

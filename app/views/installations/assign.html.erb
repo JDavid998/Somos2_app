@@ -1,4 +1,26 @@
-<div>
-  <h1 class="font-bold text-4xl">Installations#assign</h1>
-  <p>Find me in app/views/installations/assign.html.erb</p>
-</div>
+<div class="max-w-xl mx-auto mt-10 bg-indigo-800 rounded-lg shadow p-8 text-indigo-50">
+  <h1 class="text-2xl font-bold mb-6">Asignar Técnico a Instalación</h1>
+  <%= form_with url: assign_installation_path, method: :patch, local: true, scope: nil do |form| %>
+    <%= form.hidden_field :installation_id, value: @installation.id %>
+    <% if @installation.errors.any? %>
+      <div class="bg-red-100 text-red-800 rounded p-4 mb-4">
+        <h2 class="font-bold mb-2"><%= pluralize(@installation.errors.count, "error") %> impidieron guardar la asignación:</h2>
+        <ul class="list-disc pl-5">
+          <% @installation.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+    <div class="mb-6">
+      <%= form.label :technician_id, 'Técnico', class: 'block font-semibold mb-1' %>
+      <%= form.collection_select :technician_id, Technician.active.order(:name), :id, :name, { prompt: 'Selecciona un técnico' }, class: 'w-full rounded px-3 py-2 text-indigo-900' %>
+    </div>
+    <div class="flex space-x-4">
+      <%= form.submit 'Asignar Técnico', class: 'bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded shadow' %>
+      <%= link_to 'Volver', installations_path, class: 'bg-indigo-500 hover:bg-indigo-600 text-white px-4 py-2 rounded shadow' %>
+    </div>
+  </div>
+  <% end %>
+
+

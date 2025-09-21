@@ -1,6 +1,6 @@
 <h2>Resend confirmation instructions</h2>
 
-<%= form_for(resource, as: resource_name, url: confirmation_path(resource_name), html: { method: :post }) do |f| %>
+<%= form_with model: @admin, url: admins_path, local: true, class: "space-y-6" do |f| %>
   <%= render "devise/shared/error_messages", resource: resource %>
 
   <div class="field">

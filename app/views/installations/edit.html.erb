@@ -1,4 +1,45 @@
-<div>
-  <h1 class="font-bold text-4xl">Installations#edit</h1>
-  <p>Find me in app/views/installations/edit.html.erb</p>
+<div class="max-w-xl mx-auto mt-10 bg-indigo-800 rounded-lg shadow p-8 text-indigo-50">
+  <h1 class="text-2xl font-bold mb-6">Editar Instalación</h1>
+  <%= form_with(model: @installation, local: true) do |form| %>
+    <% if @installation.errors.any? %>
+      <div class="bg-red-100 text-red-800 rounded p-4 mb-4">
+        <h2 class="font-bold mb-2"><%= pluralize(@installation.errors.count, "error") %> impidieron guardar la instalación:</h2>
+        <ul class="list-disc pl-5">
+          <% @installation.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+    <div class="mb-4">
+      <%= form.label :customer_name, 'Cliente', class: 'block font-semibold mb-1' %>
+      <%= form.text_field :customer_name, class: 'w-full rounded px-3 py-2 text-indigo-900' %>
+    </div>
+    <div class="mb-4">
+      <%= form.label :customer_address, 'Dirección', class: 'block font-semibold mb-1' %>
+      <%= form.text_field :customer_address, class: 'w-full rounded px-3 py-2 text-indigo-900' %>
+    </div>
+    <div class="mb-4">
+      <%= form.label :customer_phone, 'Teléfono', class: 'block font-semibold mb-1' %>
+      <%= form.text_field :customer_phone, class: 'w-full rounded px-3 py-2 text-indigo-900' %>
+    </div>
+    <div class="mb-4">
+      <%= form.label :scheduled_date, 'Fecha programada', class: 'block font-semibold mb-1' %>
+      <%= form.date_field :scheduled_date, class: 'w-full rounded px-3 py-2 text-indigo-900' %>
+      <%= form.label :scheduled_time, 'Hora programada', class: 'block font-semibold mb-1 mt-2' %>
+      <%= form.time_field :scheduled_time, class: 'w-full rounded px-3 py-2 text-indigo-900' %>
+    </div>
+    <div class="mb-4">
+      <%= form.label :notes, 'Notas', class: 'block font-semibold mb-1' %>
+      <%= form.text_area :notes, class: 'w-full rounded px-3 py-2 text-indigo-900', rows: 2 %>
+    </div>
+    <div class="mb-6">
+      <%= form.label :status, 'Estado', class: 'block font-semibold mb-1' %>
+      <%= form.select :status, ['Pending', 'Assigned', 'In Progress', 'Completed', 'Cancelled'], {}, class: 'w-full rounded px-3 py-2 text-indigo-900' %>
+    </div>
+    <div class="flex space-x-4">
+      <%= form.submit 'Actualizar Instalación', class: 'bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded shadow' %>
+      <%= link_to 'Volver', installations_path, class: 'bg-indigo-500 hover:bg-indigo-600 text-white px-4 py-2 rounded shadow' %>
+    </div>
+  <% end %>
 </div>

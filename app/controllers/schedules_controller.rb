@@ -6,7 +6,7 @@ class SchedulesController < ApplicationController
     @date = params[:date]&.to_date || Date.current
     @installations = Installation.includes(:technician)
                                 .for_date(@date)
-                                .order(:start_time)
+                                .order(:scheduled_time)
     @technicians = Technician.active.order(:name)
   end
 
@@ -15,6 +15,6 @@ class SchedulesController < ApplicationController
     @date = params[:date]&.to_date || Date.current
     @installations = @technician.installations
                                .for_date(@date)
-                               .order(:start_time)
+                               .order(:scheduled_time)
   end
 end

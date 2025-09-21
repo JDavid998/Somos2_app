@@ -1,7 +1,23 @@
 class InstallationsController < ApplicationController
+  def start
+    @installation.update(status: 'in_progress')
+    redirect_to @installation, notice: 'Instalación iniciada.'
+  end
+
+  def finish
+    Rails.logger.debug "Finish params: #{params.inspect}"
+    duration_hours = params[:duration_hours].to_f
+    Rails.logger.debug "Duration hours: #{duration_hours}"
+    if duration_hours > 0
+      @installation.update(status: 'completed')
+      redirect_to @installation, notice: 'Instalación finalizada.'
+    else
+      redirect_to @installation, alert: "Debe ingresar una duración válida mayor a 0 horas. Recibido: #{params[:duration_hours]}"
+    end
+  end
   before_action :authenticate_user!
   before_action :ensure_admin
-  before_action :set_installation, only: [:show, :edit, :update, :destroy, :assign, :complete, :cancel]
+  before_action :set_installation, only: [:show, :edit, :update, :destroy, :complete, :cancel, :start, :finish]
 
   def index
     @installations = Installation.includes(:technician).order(scheduled_date: :desc)
@@ -33,6 +49,7 @@ class InstallationsController < ApplicationController
   end
 
   def update
+    Rails.logger.error "[DEBUG] update action params: #{params.inspect}"
     if @installation.update(installation_params)
       redirect_to @installation, notice: 'Instalación actualizada exitosamente.'
     else
@@ -47,17 +64,15 @@ class InstallationsController < ApplicationController
   end
 
   def assign
-    if params[:technician_id].present?
-      @installation.technician_id = params[:technician_id]
-      @installation.status = 'assigned'
-      
-      if @installation.save
-        redirect_to @installation, notice: 'Técnico asignado exitosamente.'
-      else
-        redirect_to @installation, alert: @installation.errors.full_messages.join(', ')
-      end
+    Rails.logger.error "[DEBUG] assign action params: #{params.inspect}"
+    installation = Installation.find(params[:installation_id])
+    technician = Technician.find(params[:technician_id])
+    installation.technician = technician
+    installation.status = 'assigned'
+    if installation.save
+      redirect_to technician_path(technician), notice: 'Instalación asignada exitosamente.'
     else
-      redirect_to @installation, alert: 'Debe seleccionar un técnico.'
+      redirect_to technician_path(technician), alert: installation.errors.full_messages.join(', ')
     end
   end
 
@@ -79,6 +94,6 @@ class InstallationsController < ApplicationController
 
   def installation_params
     params.require(:installation).permit(:customer_name, :customer_address, :customer_phone, 
-                                       :scheduled_date, :start_time, :duration_hours, :notes)
+                                       :scheduled_date, :scheduled_time, :notes)
   end
 end

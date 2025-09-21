@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_09_15_134616) do
+ActiveRecord::Schema[8.0].define(version: 2025_09_21_205901) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -19,13 +19,14 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_15_134616) do
     t.text "customer_address", null: false
     t.string "customer_phone"
     t.date "scheduled_date", null: false
-    t.time "start_time", null: false
-    t.integer "duration_hours", null: false
+    t.time "start_time"
+    t.integer "duration_hours"
     t.string "status", default: "pending"
     t.bigint "technician_id"
     t.text "notes"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.time "scheduled_time"
     t.index ["scheduled_date", "start_time"], name: "index_installations_on_scheduled_date_and_start_time"
     t.index ["status"], name: "index_installations_on_status"
     t.index ["technician_id"], name: "index_installations_on_technician_id"

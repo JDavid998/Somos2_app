@@ -23,7 +23,12 @@ technicians = [
   { name: 'Ivan Plazas', email: 'ivan.p@somos.com', phone: '+57 302 999 9999', active: true },
   { name: 'Santiago Arias', email: 'santiago.a@somos.com', phone: '+57 303 333 3333', active: true },
   { name: 'Angie Bautista', email: 'angie.b@somos.com', phone: '+57 304 222 2222', active: true },
-  { name: 'Ferney Martinez', email: 'ferney.m@somos.com', phone: '+57 305 555 5555', active: true }
+  { name: 'Ferney Martinez', email: 'ferney.m@somos.com', phone: '+57 305 555 5555', active: true },
+  { name: "Luis Fernando Rojas", email: "luis.fernando@somos.com", phone: "+57 306 666 6666", active: true },
+  { name: 'Carlos López', email: 'carlos.lopez@somos.com', phone: '+57 307 777 7777', active: true },
+  { name: 'Cristan Daza', email: 'cristan.daza@somos.com', phone: '+57 308 888 8888', active: true },
+  { name: 'Ana María Torres', email: 'ana.torres@somos.com', phone: '+57 309 999 9999', active: true },
+  { name: 'Lucas Pérez', email: 'lucas.perez@somos.com', phone: '+57 310 000 0000', active: true }
 ]
 
 created_technicians = technicians.map do |tech_data|

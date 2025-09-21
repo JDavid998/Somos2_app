@@ -1,4 +1,51 @@
-<div>
-  <h1 class="font-bold text-4xl">Installations#show</h1>
-  <p>Find me in app/views/installations/show.html.erb</p>
+<div class="max-w-xl mx-auto mt-10 bg-gray-800 rounded-lg shadow-lg border-2 border-emerald-400 p-8 text-gray-200">
+  <h1 class="text-2xl font-bold mb-6 text-gray-100">Detalles de la Instalación</h1>
+  <div class="mb-6 space-y-3">
+    <div><span class="font-semibold text-gray-300">ID:</span> <span class="text-gray-200"><%= @installation.id %></span></div>
+    <div><span class="font-semibold text-gray-300">Cliente:</span> <span class="text-gray-200"><%= @installation.customer_name %></span></div>
+    <div><span class="font-semibold text-gray-300">Estado:</span> 
+      <span class="px-2 py-1 rounded text-sm <%= 
+        case @installation.status
+        when 'pending' then 'bg-yellow-600 text-yellow-100'
+        when 'assigned' then 'bg-blue-600 text-blue-100'
+        when 'in_progress' then 'bg-orange-600 text-orange-100'
+        when 'completed' then 'bg-green-600 text-green-100'
+        when 'cancelled' then 'bg-red-600 text-red-100'
+        else 'bg-gray-600 text-gray-100'
+        end %>">
+        <%= @installation.status.humanize %>
+      </span>
+    </div>
+    <div><span class="font-semibold text-gray-300">Fecha programada:</span> <span class="text-gray-200"><%= @installation.scheduled_date&.strftime("%Y-%m-%d") %></span></div>
+    <div><span class="font-semibold text-gray-300">Hora programada:</span> <span class="text-gray-200"><%= @installation.scheduled_time&.strftime("%H:%M") || 'No especificada' %></span></div>
+    <div><span class="font-semibold text-gray-300">Creado:</span> <span class="text-gray-200"><%= @installation.created_at.strftime("%Y-%m-%d %H:%M") %></span></div>
+  </div>
+    </div>
+  
+  <!-- Acciones de instalación -->
+  <div class="mt-6 p-6 bg-gray-700/50 rounded-lg border-2 border-emerald-400/50">
+    <h3 class="text-lg font-semibold text-gray-200 mb-4">Acciones de Instalación</h3>
+    <div class="flex flex-wrap gap-3">
+      <% if @installation.status == 'assigned' %>
+        <%= button_to 'Iniciar Instalación', start_installation_path(@installation), 
+            method: :patch, 
+            class: 'bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg shadow-lg font-medium transition duration-200', 
+            data: { turbo_confirm: '¿Deseas iniciar esta instalación? Se registrará la hora actual.' } %>
+      <% elsif @installation.status == 'in_progress' %>
+        <%= button_to 'Finalizar Instalación', finish_installation_path(@installation), 
+            method: :patch, 
+            class: 'bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg shadow-lg font-medium transition duration-200', 
+            data: { turbo_confirm: '¿Deseas finalizar esta instalación? Se calculará la duración automáticamente.' } %>
+      <% elsif @installation.status == 'completed' %>
+        <span class="bg-green-600 text-white px-6 py-3 rounded-lg text-sm font-medium">✓ Instalación Completada</span>
+      <% elsif @installation.status == 'cancelled' %>
+        <span class="bg-red-600 text-white px-6 py-3 rounded-lg text-sm font-medium">✗ Instalación Cancelada</span>
+      <% end %>
+    </div>
+  </div>
+  
+  <div class="flex space-x-4 mt-8">
+    <%= link_to 'Editar', edit_installation_path(@installation), class: 'bg-yellow-600 hover:bg-yellow-700 text-white px-6 py-3 rounded-lg shadow-lg font-medium transition duration-200' %>
+    <%= link_to 'Volver', installations_path, class: 'bg-gray-600 hover:bg-gray-700 text-white px-6 py-3 rounded-lg shadow-lg font-medium transition duration-200' %>
+  </div>
 </div>
