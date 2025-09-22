@@ -10,11 +10,11 @@ class DashboardController < ApplicationController
                                              .where(updated_at: Date.current.beginning_of_month..Date.current.end_of_month)
                                              .count
     
-    # Filtros para gráficas
+    
     @selected_technician = params[:technician_id].present? ? Technician.find(params[:technician_id]) : nil
     @date_range = params[:date_range] || '30_days'
     
-    # Configurar rango de fechas
+    
     case @date_range
     when '7_days'
       start_date = 7.days.ago
@@ -30,16 +30,16 @@ class DashboardController < ApplicationController
       end_date = Date.current
     end
     
-    # Base query para instalaciones
+   
     installations_query = Installation.where(scheduled_date: start_date..end_date)
     installations_query = installations_query.where(technician: @selected_technician) if @selected_technician
     
     @installations_by_day = installations_query.group(:scheduled_date).count
     
-    # Gráfica de estados de instalaciones
+    
     @installations_by_status = installations_query.group(:status).count
     
-    # Gráfica de instalaciones por técnico (top 10)
+   
     @installations_by_technician = Installation.joins(:technician)
                                               .where(scheduled_date: start_date..end_date)
                                               .group('technicians.name')
@@ -48,10 +48,10 @@ class DashboardController < ApplicationController
                                               .first(10)
                                               .to_h
 
-    # Lista de técnicos para el filtro
+    
     @all_technicians = Technician.active.order(:name)
 
-    # Próximas instalaciones (próximas 2 semanas)
+    
     schedule_start_date = Date.current
     schedule_end_date = 2.weeks.from_now
     

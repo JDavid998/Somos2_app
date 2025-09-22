@@ -11,7 +11,7 @@ end
 puts "Creando  administrador..."
 admin = User.create!(
   email: 'admin@somos.com',
-  password: '123456',
+  password: '4dm1n50m05',
   name: 'Administrador Principal',
   role: 'admin'
 )

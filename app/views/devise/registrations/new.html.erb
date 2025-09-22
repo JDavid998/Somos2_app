@@ -1,38 +1,58 @@
-<div class="min-h-screen flex items-center justify-center bg-gray-50">
-  <div class="max-w-md  bg-white p-8 rounded-lg shadow">
-<h2 class="text-2xl font-bold mb-6">REGISTRO</h2>
+<div class="min-h-screen flex items-center justify-center" 
+     style="background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('<%= asset_path('somos_orb.jpg') %>'); 
+            background-size: cover; 
+            background-position: center; 
+            background-repeat: no-repeat; 
+            background-attachment: fixed;">
+  <div class="bg-black/50 max-w-md w-full p-8 rounded-lg shadow-xl border border-gray-700">
+    <h2 class="text-3xl font-bold mb-6 text-center text-white">REGISTRO DE ADMIN</h2>
 
-<%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
-  <%= render "devise/shared/error_messages", resource: resource %>
+    <%= form_for(resource, as: resource_name, url: registration_path(resource_name), class: "space-y-6") do |f| %>
+      <%= render "devise/shared/error_messages", resource: resource %>
 
-  <div class="field">
-    <%= f.label :name, "Nombre completo" %><br />
-    <%= f.text_field :name, autofocus: true, autocomplete: "name" %>
-  </div>
+      <div class="space-y-4">
+        <div>
+          <%= f.label :name, "Nombre completo", class: "block text-sm font-medium text-gray-300 mb-2" %>
+          <%= f.text_field :name, autofocus: true, autocomplete: "name",
+              class: "w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500",
+              placeholder: "Tu nombre completo" %>
+        </div>
 
-  <div class="field">
-    <%= f.label :email, "Correo electrónico" %><br />
-    <%= f.email_field :email, autocomplete: "email" %>
-  </div>
+        <div>
+          <%= f.label :email, "Correo electrónico", class: "block text-sm font-medium text-gray-300 mb-2" %>
+          <%= f.email_field :email, autocomplete: "email",
+              class: "w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500",
+              placeholder: "tu@email.com" %>
+        </div>
 
-  <div class="field">
-    <%= f.label :password, "Contraseña" %>
-    <% if @minimum_password_length %>
-    <em>(<%= @minimum_password_length %> caracteres mínimo)</em>
-    <% end %><br />
-    <%= f.password_field :password, autocomplete: "new-password" %>
-  </div>
+        <div>
+          <%= f.label :password, class: "block text-sm font-medium text-gray-300 mb-2" do %>
+            Contraseña
+            <% if @minimum_password_length %>
+              <span class="text-xs text-gray-400">(<%= @minimum_password_length %> caracteres mínimo)</span>
+            <% end %>
+          <% end %>
+          <%= f.password_field :password, autocomplete: "new-password",
+              class: "w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500",
+              placeholder: "Tu contraseña" %>
+        </div>
 
-  <div class="field">
-    <%= f.label :password_confirmation, "Confirmar contraseña" %><br />
-    <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
-  </div>
+        <div>
+          <%= f.label :password_confirmation, "Confirmar contraseña", class: "block text-sm font-medium text-gray-300 mb-2" %>
+          <%= f.password_field :password_confirmation, autocomplete: "new-password",
+              class: "w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500",
+              placeholder: "Confirma tu contraseña" %>
+        </div>
+      </div>
 
-  <div class="actions">
-    <%= f.submit "Registrarse" %>
-  </div>
-<% end %>
-
-<%= render "devise/shared/links" %>
+      <div class="space-y-2">
+        <%= f.submit "Registrarse", 
+            class: "w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-4 px-6 rounded-lg transition duration-200 transform hover:scale-105 text-lg" %>
+        
+        <div class="text-center">
+          <%= render "devise/shared/links" %>
+        </div>
+      </div>
+    <% end %>
   </div>
 </div>
