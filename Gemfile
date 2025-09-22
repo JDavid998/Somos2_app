@@ -68,7 +68,7 @@ group :production do
 end
 gem "tailwindcss-rails", "~> 2.7.0"
 
-gem "chartkick", "~> 4.0"
+gem "chartkick", "~> 5.2"
 
 gem "groupdate", "~> 6.7.0"
 
