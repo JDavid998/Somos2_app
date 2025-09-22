@@ -66,7 +66,7 @@ group :production do
   # Use PostgreSQL as the database for Active Record
   gem "pg", "~> 1.1"
 end
-gem "tailwindcss-rails", "~> 2.7.0"
+gem "tailwindcss-rails", "~> 4.3.0"
 
 gem "chartkick", "~> 4.0"
 
